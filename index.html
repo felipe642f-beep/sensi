@@ -1,19 +1,602 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HAPPY SENSI 2.0</title>
-    <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { background: #05070a; color: #ffffff; font-family: system-ui, -apple-system, sans-serif; padding: 15px; text-align: center; }
-        .container { max-width: 480px; margin: 0 auto; background: #111622; padding: 20px; border-radius: 16px; border: 2px solid #ff0055; box-shadow: 0 0 20px rgba(255, 0, 85, 0.3); }
-        h1 { color: #ff0055; font-size: 26px; margin-bottom: 2px; text-shadow: 0 0 10px rgba(255, 0, 85, 0.5); }
-        .subtitle { color: #00ffaa; font-size: 12px; letter-spacing: 1px; margin-bottom: 20px; text-transform: uppercase; }
-        .box { background: #171e31; padding: 12px; border-radius: 8px; margin-bottom: 12px; text-align: left; }
-        label { display: block; font-size: 13px; color: #a0aed0; margin-bottom: 6px; font-weight: bold; }
-        select { width: 100%; padding: 12px; background: #090d16; color: #ffffff; border: 1px solid #00ffaa; border-radius: 6px; font-size: 15px; outline: none; }
-        button { width: 100%; padding: 16px; background: linear-gradient(45deg, #ff0055, #ff5500); color: #ffffff; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 15px rgba(255, 0, 85, 0.4); text-transform: uppercase; margin-top: 10px; }
-        button:active { transform: scale(0.98); }
-        .panel-resultados { margin-top: 20px; background: #090d16; padding: 15px; border-radius: 8px; border: 1px solid #ff0055; display: none; text-align: left; }
-        .fila { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HAPPY SENSI 2.0 VIP</title>
+
+<style>
+:root{
+--bg-color:#020008;
+--container-bg:#0b0618;
+--primary-color:#ff008c;
+--secondary-color:#00f7ff;
+--text-color:#ffffff;
+--card-bg:rgba(255,255,255,.08);
+}
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Arial Black',sans-serif;
+}
+
+body{
+background:
+radial-gradient(circle at top,#29004d,#020008 60%);
+color:white;
+padding:20px;
+display:flex;
+justify-content:center;
+align-items:center;
+min-height:100vh;
+overflow-x:hidden;
+}
+
+/* efecto brillo */
+body:before{
+content:"";
+position:fixed;
+width:250px;
+height:250px;
+background:#ff008c;
+filter:blur(120px);
+top:0;
+left:0;
+opacity:.4;
+}
+
+@keyframes shake{
+0%{transform:translate(1px,1px)}
+20%{transform:translate(-3px,0)}
+40%{transform:translate(3px,2px)}
+60%{transform:translate(-3px,1px)}
+80%{transform:translate(2px,-1px)}
+100%{transform:translate(0)}
+}
+
+.shake{
+animation:shake .5s;
+}
+
+/* LOGIN */
+
+#lock-screen{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:#000;
+z-index:999;
+display:flex;
+justify-content:center;
+align-items:center;
+padding:20px;
+}
+
+.lock-box{
+background:
+linear-gradient(145deg,#120025,#050008);
+padding:35px;
+border-radius:20px;
+border:2px solid var(--primary-color);
+text-align:center;
+width:100%;
+max-width:360px;
+box-shadow:
+0 0 25px #ff008c,
+inset 0 0 20px #24002f;
+}
+
+.lock-box h2{
+color:white;
+margin-bottom:10px;
+text-shadow:
+0 0 15px var(--primary-color);
+}
+
+.lock-box p{
+font-family:Segoe UI,sans-serif;
+font-size:13px;
+color:#aaa;
+margin-bottom:20px;
+}
+
+.lock-box input{
+width:100%;
+padding:13px;
+background:#090015;
+border:1px solid var(--secondary-color);
+color:white;
+text-align:center;
+border-radius:10px;
+outline:none;
+}
+
+/* PANEL */
+
+.container{
+display:none;
+width:100%;
+max-width:440px;
+background:
+linear-gradient(160deg,#150029,#080010);
+padding:25px;
+border-radius:25px;
+border:2px solid var(--primary-color);
+box-shadow:
+0 0 30px #ff008c,
+inset 0 0 20px #1e002e;
+}
+
+h1{
+text-align:center;
+color:white;
+margin-bottom:5px;
+font-size:28px;
+text-shadow:
+0 0 10px #ff008c,
+0 0 20px #ff008c;
+}
+
+.sub{
+text-align:center;
+color:#b9c7ff;
+font-size:13px;
+margin-bottom:20px;
+}
+
+.input-group{
+margin-bottom:15px;
+}
+
+label{
+display:block;
+color:var(--secondary-color);
+font-size:11px;
+margin-bottom:5px;
+}
+
+select,input{
+width:100%;
+padding:12px;
+background:#10001f;
+border:1px solid #ffffff30;
+border-radius:10px;
+color:white;
+outline:none;
+}
+
+select:focus,input:focus{
+border-color:#ff008c;
+box-shadow:0 0 10px #ff008c;
+}
+
+.grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:12px;
+margin-top:20px;
+}
+
+.box{
+background:var(--card-bg);
+padding:14px;
+border-radius:12px;
+text-align:center;
+border:1px solid #ffffff15;
+box-shadow:
+0 0 10px #000;
+transition:.3s;
+}
+
+.box:hover{
+transform:scale(1.05);
+border-color:var(--secondary-color);
+}
+
+.val{
+font-size:22px;
+color:white;
+font-weight:bold;
+text-shadow:0 0 8px white;
+}
+
+.btn{
+width:100%;
+padding:15px;
+margin-top:12px;
+border:none;
+border-radius:12px;
+font-weight:bold;
+cursor:pointer;
+text-transform:uppercase;
+transition:.3s;
+}
+
+.btn:hover{
+transform:scale(1.03);
+}
+
+.btn-gen{
+background:
+linear-gradient(135deg,#ff008c,#700038);
+color:white;
+box-shadow:
+0 0 20px #ff008c;
+}
+
+.btn-copy{
+background:transparent;
+border:2px solid var(--secondary-color);
+color:var(--secondary-color);
+box-shadow:
+0 0 15px #00f7ff;
+}
+
+</style></head>
+
+<body>
+
+<div id="lock-screen">
+
+    <div class="lock-box">
+
+        <h2>⚡ ACCESO RESTRINGIDO ⚡</h2>
+
+        <p>
+        Introduce la clave de HAPPY SENSI 2.0 VIP
+        para desbloquear el panel técnico.
+        </p>
+
+        <input 
+        type="password" 
+        id="pass" 
+        placeholder="••••"
+        >
+
+        <button 
+        class="btn btn-gen" 
+        onclick="check()">
+        INGRESAR CÓDIGO VIP 🔓
+        </button>
+
+    </div>
+
+</div>
+
+
+<div class="container" id="panel">
+
+<h1>🔥 HAPPY SENSI 2.0 VIP 🔥</h1>
+
+<p class="sub">
+Ajustes inteligentes multi-rango (Meta 100-190)
+</p>
+
+
+<div class="input-group">
+
+<label>📱 Marca</label>
+
+<select id="marca">
+
+<option>Samsung</option>
+<option>iPhone</option>
+<option>Xiaomi</option>
+<option>Motorola</option>
+<option>Huawei</option>
+<option>POCO</option>
+
+</select>
+
+</div>
+
+
+
+<div class="input-group">
+
+<label>📲 Modelo (Obligatorio)</label>
+
+<input 
+type="text" 
+id="modelo" 
+placeholder="Ej: A14, S23, Poco X3..."
+>
+
+</div>
+
+
+
+<div class="input-group">
+
+<label>🎯 Tipo de Sensi</label>
+
+<select id="tipo">
+
+<option value="baja">
+Sensi Baja
+</option>
+
+<option value="calibrada">
+Sensi Calibrada
+</option>
+
+<option value="alta">
+Sensi Alta
+</option>
+
+</select>
+
+</div>
+
+
+
+<div class="grid">
+
+
+<div class="box">
+<label>General</label>
+<div class="val" id="gen">--</div>
+</div>
+
+
+<div class="box">
+<label>Punto Rojo</label>
+<div class="val" id="red">--</div>
+</div>
+
+
+<div class="box">
+<label>Mira X2</label>
+<div class="val" id="x2">--</div>
+</div>
+
+
+<div class="box">
+<label>Mira X4</label>
+<div class="val" id="x4">--</div>
+</div>
+
+
+<div class="box">
+<label>Francotirador</label>
+<div class="val" id="sniper">--</div>
+</div>
+
+
+<div class="box">
+<label>Cámara 360</label>
+<div class="val" id="cam">--</div>
+</div>
+
+
+<div class="box">
+
+<label>Botón</label>
+
+<div 
+class="val" 
+id="btn" 
+style="color:var(--secondary-color)">
+--
+</div>
+
+</div>
+
+
+<div class="box">
+
+<label>DPI</label>
+
+<div 
+class="val" 
+id="dpi" 
+style="color:var(--secondary-color)">
+--
+</div>
+
+</div>
+
+
+</div>
+
+
+
+<button 
+class="btn btn-gen" 
+onclick="generar()">
+⚡ GENERAR AJUSTE ⚡
+</button>
+
+
+
+<button 
+class="btn btn-copy" 
+onclick="copiar()">
+📋 COPIAR CONFIGURACIÓN
+</button>
+
+
+</div><script>
+
+function check() {
+
+if(document.getElementById('pass').value === "1863785") {
+
+document.getElementById('lock-screen').style.display='none';
+
+document.getElementById('panel').style.display='block';
+
+}
+
+else {
+
+alert("Clave Incorrecta");
+
+}
+
+}
+
+
+
+function generar() {
+
+
+if(document.getElementById('modelo').value.trim()===""){
+
+alert("Debes ingresar tu modelo de celular para generar la sensi");
+
+return;
+
+}
+
+
+const panel=document.getElementById('panel');
+
+panel.classList.remove('shake');
+
+void panel.offsetWidth;
+
+panel.classList.add('shake');
+
+
+const t=document.getElementById('tipo').value;
+
+let min,max;
+
+
+if(t==="baja"){
+
+min=100;
+
+max=140;
+
+}
+
+else if(t==="calibrada"){
+
+min=140;
+
+max=160;
+
+}
+
+else{
+
+min=160;
+
+max=190;
+
+}
+
+
+
+let posibles=[];
+
+
+for(let i=min;i<=max;i++){
+
+posibles.push(i);
+
+}
+
+
+posibles.sort(()=>Math.random()-0.5);
+
+
+
+document.getElementById('gen').innerText=posibles[0];
+
+document.getElementById('red').innerText=posibles[1];
+
+document.getElementById('x2').innerText=posibles[2];
+
+document.getElementById('x4').innerText=posibles[3];
+
+document.getElementById('sniper').innerText=posibles[4];
+
+document.getElementById('cam').innerText=posibles[5];
+
+
+
+document.getElementById('btn').innerText=
+(35+Math.floor(Math.random()*36))+"%";
+
+
+
+const dpis=[
+450,
+520,
+580,
+640,
+680,
+720,
+780,
+850
+];
+
+
+document.getElementById('dpi').innerText=
+(document.getElementById('marca').value==="iPhone")
+?
+"Defecto"
+:
+dpis[Math.floor(Math.random()*dpis.length)];
+
+
+
+}
+
+
+
+function copiar(){
+
+
+const config=
+`HAPPY SENSI 2.0 VIP:
+
+General: ${document.getElementById('gen').innerText}
+
+Punto Rojo: ${document.getElementById('red').innerText}
+
+Mira X2: ${document.getElementById('x2').innerText}
+
+Mira X4: ${document.getElementById('x4').innerText}
+
+Francotirador: ${document.getElementById('sniper').innerText}
+
+Cámara 360: ${document.getElementById('cam').innerText}
+
+Botón: ${document.getElementById('btn').innerText}
+
+DPI: ${document.getElementById('dpi').innerText}`;
+
+
+
+const tempInput=document.createElement("textarea");
+
+tempInput.value=config;
+
+document.body.appendChild(tempInput);
+
+tempInput.select();
+
+document.execCommand("copy");
+
+document.body.removeChild(tempInput);
+
+
+alert("¡Configuración VIP copiada al portapapeles! ⚡");
+
+
+}
+
+</script>
+
+
+</body>
+
+</html>
